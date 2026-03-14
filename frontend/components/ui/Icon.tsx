@@ -5,8 +5,8 @@ interface IconProps {
   name: keyof typeof LucideIcons;
   size?: number;
   className?: string;
-  animate?: 'spin' | 'pulse';
-  color?: 'primary' | 'secondary' | 'tertiary' | 'muted' | 'success' | 'warning' | 'error' | 'default';
+  animate?: 'spin' | 'pulse' | 'bounce' | 'spin-slow' | 'spin-fast' | 'ping' | 'wobble' | 'glow';
+  color?: 'primary' | 'secondary' | 'tertiary' | 'muted' | 'success' | 'warning' | 'error' | 'info' | 'default';
   strokeWidth?: number;
 }
 
@@ -18,6 +18,7 @@ const colorMap: Record<string, string> = {
   success: 'icon-success',
   warning: 'icon-warning',
   error: 'icon-error',
+  info: 'icon-info',
   default: '',
 };
 
@@ -35,7 +36,19 @@ export default function Icon({
     return <span className={`icon ${className}`}>?</span>;
   }
 
-  const animationClass = animate ? `animate-${animate}` : '';
+  // Map animation types to CSS classes
+  const animationClassMap: Record<string, string> = {
+    spin: 'animate-spin',
+    pulse: 'animate-pulse',
+    'spin-slow': 'icon-spin-slow',
+    'spin-fast': 'icon-spin-fast',
+    bounce: 'icon-bounce',
+    ping: 'icon-pulse-ring',
+    wobble: 'icon-wobble',
+    glow: 'animate-glow',
+  };
+
+  const animationClass = animate ? animationClassMap[animate] : '';
   const colorClass = colorMap[color];
   const combinedClass = `icon ${animationClass} ${colorClass} ${className}`.trim();
 

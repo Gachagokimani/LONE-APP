@@ -39,12 +39,29 @@ export default function LoanDetailPage() {
   const [newStatus, setNewStatus] = useState('');
 
   useEffect(() => {
-    if (!auth.isAuthenticated()) {
+    const isDev = process.env.NEXT_PUBLIC_DEV_MODE === 'true';
+    
+    if (!isDev && !auth.isAuthenticated()) {
       router.push('/login');
       return;
     }
 
     const loadLoan = async () => {
+      const isDev = process.env.NEXT_PUBLIC_DEV_MODE === 'true';
+      const fallbackLoan: LoanDetail = {
+        id: loanId,
+        customer_details: { full_name: 'Kamau Njoroge', email: 'kamau.njoroge@example.com' },
+        amount: 650000,
+        interest_rate: 5.5,
+        term_months: 60,
+        status: 'approved',
+        purpose: 'Home Improvement',
+        applied_at: new Date().toISOString(),
+        current_balance: 455000,
+        total_paid: 195000,
+        disbursed_at: new Date(Date.now() - 86400000).toISOString(),
+      };
+
       try {
         const loanResponse = await apiClient.getLoanById(loanId);
         setLoan(loanResponse.data);
@@ -53,7 +70,14 @@ export default function LoanDetailPage() {
         const eventsResponse = await apiClient.getLoanEvents(loanId);
         setEvents(eventsResponse.data.results || eventsResponse.data);
       } catch (err: any) {
-        setError(err.response?.data?.error || 'Failed to load loan');
+        // In dev mode, use fallback data instead of error
+        if (isDev) {
+          setLoan(fallbackLoan);
+          setNewStatus(fallbackLoan.status);
+          setEvents([]);
+        } else {
+          setError(err.response?.data?.error || 'Failed to load loan');
+        }
       } finally {
         setLoading(false);
       }

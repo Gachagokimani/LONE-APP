@@ -41,8 +41,8 @@ export default function LoansPage() {
   const fallbackLoans: Loan[] = [
     {
       id: '1',
-      customer_details: { full_name: 'John Smith', email: 'john.smith@example.com' },
-      amount: 50000,
+      customer_details: { full_name: 'Kamau Njoroge', email: 'kamau.njoroge@example.com' },
+      amount: 650000,
       status: 'pending',
       applied_at: new Date().toISOString(),
       interest_rate: 5.5,
@@ -50,8 +50,8 @@ export default function LoansPage() {
     },
     {
       id: '2',
-      customer_details: { full_name: 'Sarah Johnson', email: 'sarah.j@example.com' },
-      amount: 75000,
+      customer_details: { full_name: 'Grace Wanjiru', email: 'grace.wanjiru@example.com' },
+      amount: 975000,
       status: 'approved',
       applied_at: new Date(Date.now() - 86400000).toISOString(),
       interest_rate: 4.8,
@@ -59,8 +59,8 @@ export default function LoansPage() {
     },
     {
       id: '3',
-      customer_details: { full_name: 'Michael Chen', email: 'mchen@example.com' },
-      amount: 30000,
+      customer_details: { full_name: 'James Kariuki', email: 'james.kariuki@example.com' },
+      amount: 390000,
       status: 'under_review',
       applied_at: new Date(Date.now() - 172800000).toISOString(),
       interest_rate: 6.2,
@@ -69,7 +69,9 @@ export default function LoansPage() {
   ];
 
   useEffect(() => {
-    if (!auth.isAuthenticated()) {
+    const isDev = process.env.NEXT_PUBLIC_DEV_MODE === 'true';
+    
+    if (!isDev && !auth.isAuthenticated()) {
       router.push('/login');
       return;
     }

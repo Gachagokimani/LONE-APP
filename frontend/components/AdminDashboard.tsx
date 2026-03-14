@@ -48,11 +48,31 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     const loadDashboard = async () => {
+      const isDev = process.env.NEXT_PUBLIC_DEV_MODE === 'true';
+      const fallbackData: DashboardData = {
+        total_loans: 45,
+        total_customers: 28,
+        total_disbursed: 162500000, // 162.5M KES
+        loans_by_status: [
+          { status: 'pending', count: 8 },
+          { status: 'under_review', count: 12 },
+          { status: 'approved', count: 15 },
+          { status: 'disbursed', count: 10 },
+          { status: 'closed', count: 3 },
+        ],
+        recent_events: [],
+      };
+
       try {
         const response = await apiClient.getAdminDashboard();
         setDashboardData(response.data);
       } catch (err: any) {
-        setError(err.response?.data?.error || 'Failed to load dashboard');
+        // In dev mode, use fallback data instead of error
+        if (isDev) {
+          setDashboardData(fallbackData);
+        } else {
+          setError(err.response?.data?.error || 'Failed to load dashboard');
+        }
       } finally {
         setLoading(false);
       }

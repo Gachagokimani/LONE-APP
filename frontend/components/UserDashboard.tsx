@@ -55,11 +55,49 @@ export default function UserDashboard() {
 
   useEffect(() => {
     const loadDashboard = async () => {
+      const isDev = process.env.NEXT_PUBLIC_DEV_MODE === 'true';
+      const fallbackData: UserDashboardData = {
+        my_loans_count: 3,
+        my_loans_by_status: [
+          { status: 'disbursed', count: 2 },
+          { status: 'pending', count: 1 },
+        ],
+        total_borrowed: 1950000, // 1.95M KES
+        recent_loans: [
+          {
+            id: '1',
+            amount: 650000, // 650K KES
+            status: 'disbursed',
+            applied_at: new Date(Date.now() - 86400000 * 30).toISOString(),
+            interest_rate: 5.5,
+          },
+          {
+            id: '2',
+            amount: 975000, // 975K KES
+            status: 'disbursed',
+            applied_at: new Date(Date.now() - 86400000 * 60).toISOString(),
+            interest_rate: 4.8,
+          },
+          {
+            id: '3',
+            amount: 325000, // 325K KES
+            status: 'pending',
+            applied_at: new Date(Date.now() - 86400000 * 7).toISOString(),
+            interest_rate: 6.2,
+          },
+        ],
+      };
+
       try {
         const response = await apiClient.getUserDashboard();
         setDashboardData(response.data);
       } catch (err: any) {
-        setError(err.response?.data?.error || 'Failed to load dashboard');
+        // In dev mode, use fallback data instead of error
+        if (isDev) {
+          setDashboardData(fallbackData);
+        } else {
+          setError(err.response?.data?.error || 'Failed to load dashboard');
+        }
       } finally {
         setLoading(false);
       }

@@ -4,16 +4,25 @@
    ============================================================================ */
 
 /* ============================================================================
-   1. COLOR PALETTE - CSS Variables
+   1. COLOR PALETTE - CSS Variables (Revamped & Diverse)
    ============================================================================ */
 :root {
   /* Primary Colors */
   --bg-primary: #0A0A0F;
   --surface: #1A1A2A;
   --elevated: #242438;
-  --primary: #7C3AED;
-  --secondary: #EC4899;
+  --primary: #DC2626;
+  --secondary: #F97316;
   --tertiary: #3B82F6;
+  --quaternary: #06B6D4;
+  --quinary: #EC4899;
+
+  /* Accent Colors - Diverse Palette */
+  --accent-emerald: #10B981;
+  --accent-amber: #F59E0B;
+  --accent-violet: #A855F7;
+  --accent-lime: #84CC16;
+  --accent-rose: #F43F5E;
 
   /* Text & Surfaces */
   --text: #F8FAFC;
@@ -23,7 +32,8 @@
   /* Semantic */
   --success: #10B981;
   --warning: #F59E0B;
-  --error: #EF4444;
+  --error: #DC2626;
+  --info: #3B82F6;
 
   /* Shadows */
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
@@ -189,7 +199,7 @@ a:focus-visible {
 .bg-elevated { background-color: var(--elevated); }
 .bg-accent-primary { background-color: var(--primary); }
 .bg-accent-secondary { background-color: var(--secondary); }
-.bg-accent-tertiary { background-color: var(--tertiary); }
+.bg-accent-tertiary { background-color: var(--quaternary); }
 .bg-success { background-color: var(--success); }
 .bg-warning { background-color: var(--warning); }
 .bg-error { background-color: var(--error); }
@@ -199,9 +209,11 @@ a:focus-visible {
 .text-muted { color: var(--text-muted); }
 .text-accent-primary { color: var(--primary); }
 .text-accent-secondary { color: var(--secondary); }
+.text-accent-tertiary { color: var(--quaternary); }
 .text-success { color: var(--success); }
 .text-warning { color: var(--warning); }
 .text-error { color: var(--error); }
+.text-info { color: var(--info); }
 
 /* Border Colors */
 .border-color { border-color: var(--border); }
@@ -291,34 +303,34 @@ button:focus-visible, .btn:focus-visible {
 .btn-primary {
   background-color: var(--primary);
   color: var(--text);
-  box-shadow: 0 2px 4px rgba(124, 58, 237, 0.25);
+  box-shadow: 0 2px 4px rgba(220, 38, 38, 0.25);
 }
 
 .btn-primary:hover {
-  background-color: #9d5cff;
-  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
+  background-color: #B91C1C;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35);
 }
 
 .btn-secondary {
   background-color: var(--secondary);
   color: var(--text);
-  box-shadow: 0 2px 4px rgba(236, 72, 153, 0.25);
+  box-shadow: 0 2px 4px rgba(249, 115, 22, 0.25);
 }
 
 .btn-secondary:hover {
-  background-color: #ff5ec7;
-  box-shadow: 0 4px 12px rgba(236, 72, 153, 0.35);
+  background-color: #D97706;
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.35);
 }
 
 .btn-tertiary {
-  background-color: var(--tertiary);
+  background-color: var(--quaternary);
   color: var(--text);
-  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.25);
+  box-shadow: 0 2px 4px rgba(6, 182, 212, 0.25);
 }
 
 .btn-tertiary:hover {
-  background-color: #5a9fff;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35);
+  background-color: #0891B2;
+  box-shadow: 0 4px 12px rgba(6, 182, 212, 0.35);
 }
 
 .btn-outline {
@@ -331,8 +343,8 @@ button:focus-visible, .btn:focus-visible {
 .btn-outline:hover {
   border-color: var(--primary);
   color: var(--primary);
-  background-color: rgba(124, 58, 237, 0.05);
-  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.15);
+  background-color: rgba(220, 38, 38, 0.05);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.15);
 }
 
 .btn-sm {
@@ -371,7 +383,7 @@ input::placeholder, textarea::placeholder {
 input:focus, textarea:focus, select:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1), inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1), inset 0 1px 2px rgba(0, 0, 0, 0.1);
   background-color: var(--elevated);
 }
 
@@ -500,6 +512,81 @@ input:focus, textarea:focus, select:focus {
   animation: fadeIn 0.3s ease-out;
 }
 
+/* Enhanced Animations - Render Effects & Icon Animations */
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in-up {
+  animation: slideInUp 0.5s ease-out;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.animate-bounce {
+  animation: bounce 0.8s ease-in-out infinite;
+}
+
+@keyframes ping {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-ping {
+  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes wobble {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-2deg); }
+  75% { transform: rotate(2deg); }
+}
+
+.animate-wobble {
+  animation: wobble 0.6s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 5px rgba(220, 38, 38, 0.3); }
+  50% { box-shadow: 0 0 20px rgba(220, 38, 38, 0.6); }
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+/* Icon Animation Variants */
+.icon-bounce { animation: bounce 0.8s ease-in-out infinite; }
+.icon-spin-slow { animation: spin 3s linear infinite; }
+.icon-spin-fast { animation: spin 0.6s linear infinite; }
+.icon-pulse-ring { animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite; }
+.icon-wobble { animation: wobble 0.6s ease-in-out infinite; }
+
 /* ============================================================================
    11. MODAL & OVERLAY STYLES
    ============================================================================ */
@@ -611,12 +698,15 @@ tr:hover {
 
 .icon-primary { color: var(--primary); }
 .icon-secondary { color: var(--secondary); }
+.icon-tertiary { color: var(--quaternary); }
 .icon-muted { color: var(--text-muted); }
 .icon-success { color: var(--success); }
+.icon-warning { color: var(--warning); }
 .icon-error { color: var(--error); }
+.icon-info { color: var(--info); }
 
 /* ============================================================================
-   14. BADGES & LABELS - Enhanced Semantic Colors
+   14. BADGES & LABELS - Enhanced Semantic Colors (Diverse Palette)
    ============================================================================ */
 .badge {
   display: inline-flex;
@@ -633,23 +723,33 @@ tr:hover {
 }
 
 .badge-primary {
-  background-color: rgba(124, 58, 237, 0.15);
+  background-color: rgba(220, 38, 38, 0.15);
   color: var(--primary);
-  border-color: rgba(124, 58, 237, 0.3);
+  border-color: rgba(220, 38, 38, 0.3);
 }
 
 .badge-primary:hover {
-  background-color: rgba(124, 58, 237, 0.25);
+  background-color: rgba(220, 38, 38, 0.25);
 }
 
 .badge-secondary {
-  background-color: rgba(236, 72, 153, 0.15);
+  background-color: rgba(249, 115, 22, 0.15);
   color: var(--secondary);
-  border-color: rgba(236, 72, 153, 0.3);
+  border-color: rgba(249, 115, 22, 0.3);
 }
 
 .badge-secondary:hover {
-  background-color: rgba(236, 72, 153, 0.25);
+  background-color: rgba(249, 115, 22, 0.25);
+}
+
+.badge-tertiary {
+  background-color: rgba(6, 182, 212, 0.15);
+  color: var(--quaternary);
+  border-color: rgba(6, 182, 212, 0.3);
+}
+
+.badge-tertiary:hover {
+  background-color: rgba(6, 182, 212, 0.25);
 }
 
 .badge-success {
@@ -673,13 +773,33 @@ tr:hover {
 }
 
 .badge-error {
-  background-color: rgba(239, 68, 68, 0.15);
+  background-color: rgba(220, 38, 38, 0.15);
   color: var(--error);
-  border-color: rgba(239, 68, 68, 0.3);
+  border-color: rgba(220, 38, 38, 0.3);
 }
 
 .badge-error:hover {
-  background-color: rgba(239, 68, 68, 0.25);
+  background-color: rgba(220, 38, 38, 0.25);
+}
+
+.badge-info {
+  background-color: rgba(59, 130, 246, 0.15);
+  color: var(--info);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.badge-info:hover {
+  background-color: rgba(59, 130, 246, 0.25);
+}
+
+.badge-violet {
+  background-color: rgba(168, 85, 247, 0.15);
+  color: var(--accent-violet);
+  border-color: rgba(168, 85, 247, 0.3);
+}
+
+.badge-violet:hover {
+  background-color: rgba(168, 85, 247, 0.25);
 }
 
 /* ============================================================================
@@ -753,18 +873,23 @@ tr:hover {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border);
+  background: var(--primary);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--primary);
+  background: var(--secondary);
 }
 
 /* ============================================================================
    18. FOCUS & ACCESSIBILITY
    ============================================================================ */
 :focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+button:focus-visible, .btn:focus-visible {
   outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
@@ -804,13 +929,34 @@ tr:hover {
   transition: all var(--transition-normal);
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.record-tile::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+  transition: left 0.5s ease;
+}
+
+.record-tile:hover::before {
+  left: 100%;
 }
 
 .record-tile:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 12px 24px rgba(220, 38, 38, 0.15);
   border-color: var(--primary);
   background-color: var(--elevated);
+}
+
+.record-tile.group:hover .record-tile-title {
+  color: var(--primary);
 }
 
 .record-tile-header {
@@ -900,7 +1046,7 @@ tr:hover {
 
 .alert-error,
 .alert-danger {
-  background: rgba(239, 68, 68, 0.1);
+  background: rgba(220, 38, 38, 0.1);
   border-color: var(--error);
   color: var(--error);
 }

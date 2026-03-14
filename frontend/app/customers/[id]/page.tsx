@@ -37,17 +37,39 @@ export default function CustomerDetailPage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    if (!auth.isAuthenticated()) {
+    const isDev = process.env.NEXT_PUBLIC_DEV_MODE === 'true';
+    
+    if (!isDev && !auth.isAuthenticated()) {
       router.push('/login');
       return;
     }
 
     const loadCustomer = async () => {
+      const isDev = process.env.NEXT_PUBLIC_DEV_MODE === 'true';
+      const fallbackCustomer: Customer = {
+        id: customerId,
+        full_name: 'Kamau Njoroge',
+        email: 'kamau.njoroge@example.com',
+        phone: '+254 712 345 678',
+        date_of_birth: '1985-06-15',
+        address: 'Nairobi, Nairobi County',
+        employment_status: 'employed',
+        monthly_income: 130000,
+        created_at: new Date(Date.now() - 86400000 * 30).toISOString(),
+        updated_at: new Date().toISOString(),
+      };
+
       try {
         const customerResponse = await apiClient.getCustomerById(customerId);
         setCustomer(customerResponse.data);
       } catch (err: any) {
-        setError(err.response?.data?.error || 'Failed to load customer');
+        // In dev mode, use fallback data instead of error
+        if (isDev) {
+          setCustomer(fallbackCustomer);
+          setLoans([]);
+        } else {
+          setError(err.response?.data?.error || 'Failed to load customer');
+        }
       } finally {
         setLoading(false);
       }

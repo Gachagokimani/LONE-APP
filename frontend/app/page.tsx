@@ -10,7 +10,12 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    if (auth.isAuthenticated()) {
+    const isDev = process.env.NEXT_PUBLIC_DEV_MODE === 'true';
+    
+    // In dev mode, always go to dashboard
+    if (isDev) {
+      router.push('/dashboard');
+    } else if (auth.isAuthenticated()) {
       router.push('/dashboard');
     } else {
       router.push('/login');

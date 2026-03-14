@@ -63,7 +63,7 @@ export default function LoginPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
           >
-            Loan Management
+            🇰🇪 Mkopo Kenya
           </motion.h1>
           <motion.p
             className="text-body text-muted"
@@ -71,7 +71,7 @@ export default function LoginPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.35 }}
           >
-            Secure access to your loan portfolio
+            Secure Loan Management for Kenyan Businesses
           </motion.p>
         </div>
 

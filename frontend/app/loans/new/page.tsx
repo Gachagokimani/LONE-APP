@@ -25,17 +25,30 @@ export default function NewLoanPage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    if (!auth.isAuthenticated()) {
+    const isDev = process.env.NEXT_PUBLIC_DEV_MODE === 'true';
+    
+    if (!isDev && !auth.isAuthenticated()) {
       router.push('/login');
       return;
     }
 
     const loadCustomers = async () => {
+      const isDev = process.env.NEXT_PUBLIC_DEV_MODE === 'true';
+      const fallbackCustomers: Customer[] = [
+        { id: '1', full_name: 'Kamau Njoroge', email: 'kamau.njoroge@example.com' },
+        { id: '2', full_name: 'Grace Wanjiru', email: 'grace.wanjiru@example.com' },
+        { id: '3', full_name: 'James Kariuki', email: 'james.kariuki@example.com' },
+      ];
+
       try {
         const response = await apiClient.getCustomers();
         setCustomers(response.data.results || response.data);
       } catch (err) {
         console.error('Failed to load customers:', err);
+        // In dev mode, use fallback data
+        if (isDev) {
+          setCustomers(fallbackCustomers);
+        }
       }
     };
 

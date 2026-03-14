@@ -17,7 +17,10 @@ export default function DashboardPage() {
 
   useEffect(() => {
     const checkAuth = async () => {
-      if (!auth.isAuthenticated()) {
+      // In dev mode, skip authentication check
+      const isDev = process.env.NEXT_PUBLIC_DEV_MODE === 'true';
+      
+      if (!isDev && !auth.isAuthenticated()) {
         router.push('/login');
         return;
       }
@@ -28,7 +31,12 @@ export default function DashboardPage() {
         setUserRole('admin'); // Placeholder - should be fetched from backend
       } catch (err) {
         console.error('Failed to load user:', err);
-        router.push('/login');
+        // In dev mode, set admin role instead of redirecting
+        if (isDev) {
+          setUserRole('admin');
+        } else {
+          router.push('/login');
+        }
       } finally {
         setLoading(false);
       }
