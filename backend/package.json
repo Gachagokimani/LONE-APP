@@ -1,0 +1,35 @@
+{
+    "name": "loanapp-backend",
+    "version": "1.0.0",
+    "description": "Loan Application Platform - Backend Node.js Package Configuration",
+    "private": true,
+    "scripts": {
+        "dev": "python run_django.py runserver 0.0.0.0:8000",
+        "migrate": "python run_django.py migrate",
+        "makemigrations": "python run_django.py makemigrations",
+        "createsuperuser": "python run_django.py createsuperuser",
+        "collectstatic": "python run_django.py collectstatic --noinput",
+        "test": "python run_django.py test",
+        "lint": "flake8 src/ --max-line-length=120",
+        "format": "black src/",
+        "start": "gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 4"
+    },
+    "engines": {
+        "python": "3.11.x",
+        "node": "18.x"
+    },
+    "keywords": [
+        "loan",
+        "application",
+        "django",
+        "rest-api",
+        "postgresql"
+    ],
+    "author": "Development Team",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/yourorg/loanapp"
+    },
+    "note": "Main dependencies are in requirements.txt (Python). This file is for Node-based tooling and build processes if needed."
+}

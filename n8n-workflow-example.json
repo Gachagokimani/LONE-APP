@@ -1,0 +1,161 @@
+{
+  "name": "Loan Credit Check Workflow",
+  "description": "Automated credit check workflow triggered when a loan is submitted",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "loan_created",
+        "options": {}
+      },
+      "name": "Webhook - Loan Created",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "webhookId": "loan-webhook-created"
+    },
+    {
+      "parameters": {
+        "nodeVersion": 2,
+        "url": "https://external-api.example.com/credit-check",
+        "method": "POST",
+        "headersUi": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_API_KEY"
+            }
+          ]
+        },
+        "bodyParametersUi": {
+          "parameter": [
+            {
+              "name": "customer_id",
+              "value": "={{ $node[\"Webhook - Loan Created\"].json.customer_id }}"
+            },
+            {
+              "name": "loan_amount",
+              "value": "={{ $node[\"Webhook - Loan Created\"].json.amount }}"
+            }
+          ]
+        }
+      },
+      "name": "Call Credit Check API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $node[\"Call Credit Check API\"].json.credit_score }}",
+              "operation": "gt",
+              "value2": 650
+            }
+          ]
+        }
+      },
+      "name": "Decision - Credit Approved?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [750, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://backend:8000/api/webhook/n8n/update_loan/",
+        "method": "POST",
+        "bodyParametersUi": {
+          "parameter": [
+            {
+              "name": "loan_id",
+              "value": "={{ $node[\"Webhook - Loan Created\"].json.loan_id }}"
+            },
+            {
+              "name": "status",
+              "value": "approved"
+            },
+            {
+              "name": "credit_score",
+              "value": "={{ $node[\"Call Credit Check API\"].json.credit_score }}"
+            }
+          ]
+        }
+      },
+      "name": "Update Loan - Approved",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [1000, 200]
+    },
+    {
+      "parameters": {
+        "url": "http://backend:8000/api/webhook/n8n/update_loan/",
+        "method": "POST",
+        "bodyParametersUi": {
+          "parameter": [
+            {
+              "name": "loan_id",
+              "value": "={{ $node[\"Webhook - Loan Created\"].json.loan_id }}"
+            },
+            {
+              "name": "status",
+              "value": "rejected"
+            },
+            {
+              "name": "reason",
+              "value": "Credit score below threshold"
+            }
+          ]
+        }
+      },
+      "name": "Update Loan - Rejected",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [1000, 400]
+    }
+  ],
+  "connections": {
+    "Webhook - Loan Created": {
+      "main": [
+        [
+          {
+            "node": "Call Credit Check API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call Credit Check API": {
+      "main": [
+        [
+          {
+            "node": "Decision - Credit Approved?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Decision - Credit Approved?": {
+      "main": [
+        [
+          {
+            "node": "Update Loan - Approved",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update Loan - Rejected",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {}
+}

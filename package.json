@@ -1,0 +1,29 @@
+{
+  "name": "loanapp-full-stack",
+  "version": "1.0.0",
+  "description": "Loan Application Platform - Full Stack Development",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend && (if exist .env.local (echo .env exists) else (copy .env.example .env.local)) && python manage.py migrate && python manage.py runserver 0.0.0.0:8000",
+    "dev:frontend": "cd frontend && npm run dev",
+    "install:all": "npm install && cd backend && pip install -r requirements.txt && cd ../frontend && npm install",
+    "dev:both": "npm run dev:backend & npm run dev:frontend",
+    "dev:backend:windows": "cd backend && python manage.py migrate & python manage.py runserver 0.0.0.0:8000",
+    "dev:frontend:windows": "cd frontend && npm run dev",
+    "test:api": "curl -s http://localhost:8000/api/ | jq . || echo 'Waiting for backend...'",
+    "test:ui": "timeout 2 curl -s http://localhost:3000 > /dev/null && echo '✓ Frontend running on http://localhost:3000' || echo 'Frontend not available yet'",
+    "test:login": "curl -X POST http://localhost:8000/api/auth/token/ -H 'Content-Type: application/json' -d '{\"username\":\"admin\",\"password\":\"admin\"}' 2>/dev/null | jq . || echo 'Backend not ready'",
+    "test:health": "npm run test:api && npm run test:ui && npm run test:login",
+    "db:migrate": "cd backend && python manage.py migrate",
+    "db:makemigrations": "cd backend && python manage.py makemigrations",
+    "db:createsuperuser": "cd backend && python manage.py createsuperuser",
+    "db:shell": "cd backend && python manage.py shell",
+    "lint:backend": "cd backend && flake8 src/ --max-line-length=120",
+    "lint:frontend": "cd frontend && npm run lint"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  },
+  "dependencies": {}
+}
