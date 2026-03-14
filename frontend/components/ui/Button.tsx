@@ -2,7 +2,8 @@ import React, { ButtonHTMLAttributes, ReactNode } from 'react';
 import Icon from './Icon';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'tertiary' | 'outline';
+  // 7+ color variants for diversity
+  variant?: 'primary' | 'secondary' | 'tertiary' | 'quaternary' | 'info' | 'success' | 'danger' | 'feature' | 'outline';
   size?: 'sm' | 'md' | 'lg';
   isLoading?: boolean;
   children: ReactNode;

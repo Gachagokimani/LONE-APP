@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { apiClient } from '@/lib/apiClient';
 import { auth } from '@/lib/auth';
+import { getCustomerTypeColor } from '@/lib/colorMap';
+import { formatCurrency, formatPhoneKE, formatDateKE } from '@/lib/currency';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import Skeleton from '@/components/ui/Skeleton';
@@ -266,24 +268,18 @@ export default function CustomersPage() {
           transition={{ staggerChildren: 0.05, delayChildren: 0.1 }}
         >
           {filteredCustomers.map((customer, idx) => {
-            const formattedIncome = new Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency: 'USD',
-              maximumFractionDigits: 0,
-            }).format(customer.monthly_income);
-            const joinDate = new Date(customer.created_at).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'short',
-              day: 'numeric',
-            });
             const employmentStatus = customer.employment_status
               .replace(/_/g, ' ')
               .replace(/\b\w/g, (l) => l.toUpperCase());
+            const formattedIncome = formatCurrency(customer.monthly_income);
+            const joinDate = formatDateKE(new Date(customer.created_at));
+            const formattedPhone = formatPhoneKE(customer.phone);
+            const statusColor = getCustomerTypeColor('standard'); // Default customer type color
 
             return (
               <motion.div
                 key={customer.id}
-                className="record-tile group"
+                className={`record-tile group border-l-4 border-${statusColor}`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.05 }}
@@ -292,8 +288,8 @@ export default function CustomersPage() {
                 <div className="record-tile-header">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <div className="w-12 h-12 rounded-full bg-primary bg-opacity-10 flex items-center justify-center">
-                        <Icon name="User" size={24} color="primary" />
+                      <div className={`w-12 h-12 rounded-full bg-${statusColor} bg-opacity-10 flex items-center justify-center`}>
+                        <Icon name="User" size={24} color={statusColor as any} />
                       </div>
                       <div className="flex-1">
                         <h3 className="record-tile-title">
@@ -315,7 +311,7 @@ export default function CustomersPage() {
                       Contact
                     </span>
                     <span className="text-body-small font-medium text-text">
-                      {customer.phone}
+                      {formattedPhone}
                     </span>
                   </div>
 
@@ -324,7 +320,7 @@ export default function CustomersPage() {
                       <Icon name="Briefcase" size={14} color="muted" />
                       Employment
                     </span>
-                    <span className="text-body-small font-medium text-secondary">
+                    <span className={`text-body-small font-medium text-${statusColor}`}>
                       {employmentStatus}
                     </span>
                   </div>
@@ -334,7 +330,7 @@ export default function CustomersPage() {
                       <Icon name="DollarSign" size={14} color="muted" />
                       Monthly Income
                     </span>
-                    <span className="currency text-sm">
+                    <span className={`currency text-sm text-${statusColor}`}>
                       {formattedIncome}
                     </span>
                   </div>

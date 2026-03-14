@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { apiClient } from '@/lib/apiClient';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { DashboardMetricColorMap } from '@/lib/colorMap';
+import { formatCurrency } from '@/lib/currency';
 import Card from '@/components/ui/Card';
 import Skeleton from '@/components/ui/Skeleton';
 import Badge from '@/components/ui/Badge';
@@ -17,7 +19,7 @@ interface DashboardData {
   recent_events: any[];
 }
 
-const StatCard = ({ title, value, icon, delay }: { title: string; value: string | number; icon: string; delay: number }) => (
+const StatCard = ({ title, value, icon, delay, color = 'primary' }: { title: string; value: string | number; icon: string; delay: number; color?: string }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
@@ -29,12 +31,12 @@ const StatCard = ({ title, value, icon, delay }: { title: string; value: string 
           <p className="text-xs uppercase tracking-wider text-muted font-semibold mb-2">
             {title}
           </p>
-          <p className="text-heading text-primary font-bold">
+          <p className={`text-heading text-${color} font-bold`}>
             {value}
           </p>
         </div>
-        <div className="ml-4 p-3 rounded-lg bg-primary bg-opacity-10">
-          <Icon name={icon as any} size={32} color="primary" />
+        <div className={`ml-4 p-3 rounded-lg bg-${color} bg-opacity-10`}>
+          <Icon name={icon as any} size={32} color={color as any} />
         </div>
       </div>
     </Card>
@@ -118,18 +120,21 @@ export default function AdminDashboard() {
               value={dashboardData?.total_loans || 0}
               icon="Banknote"
               delay={0.1}
+              color={DashboardMetricColorMap.total_loans}
             />
             <StatCard
               title="Active Customers"
               value={dashboardData?.total_customers || 0}
               icon="Users"
               delay={0.15}
+              color={DashboardMetricColorMap.active}
             />
             <StatCard
               title="Total Disbursed Amount"
-              value={`$${((dashboardData?.total_disbursed || 0) / 1000).toFixed(0)}K`}
+              value={formatCurrency(dashboardData?.total_disbursed || 0, true)}
               icon="DollarSign"
               delay={0.2}
+              color={DashboardMetricColorMap.total_disbursed}
             />
           </>
         )}
@@ -152,8 +157,8 @@ export default function AdminDashboard() {
         >
           <Card hoverable>
             <div className="mb-6 pb-6 border-b border-border">
-              <h2 className="text-heading text-primary font-bold mb-2 flex items-center gap-2">
-                <Icon name="BarChart2" size={24} color="primary" />
+              <h2 className="text-heading text-emerald font-bold mb-2 flex items-center gap-2">
+                <Icon name="BarChart2" size={24} color="emerald" />
                 Loan Distribution by Status
               </h2>
               <p className="text-body-small text-muted">
@@ -179,7 +184,7 @@ export default function AdminDashboard() {
                     boxShadow: 'var(--shadow-lg)',
                   }}
                   labelStyle={{ color: 'var(--text)' }}
-                  cursor={{ fill: 'rgba(124, 58, 237, 0.1)' }}
+                  cursor={{ fill: 'rgba(16, 185, 129, 0.1)' }}
                 />
                 <Legend
                   wrapperStyle={{
@@ -189,7 +194,7 @@ export default function AdminDashboard() {
                 />
                 <Bar
                   dataKey="count"
-                  fill="var(--primary)"
+                  fill="var(--emerald)"
                   radius={[8, 8, 0, 0]}
                   animationDuration={600}
                 />

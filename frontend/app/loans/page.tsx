@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { apiClient } from '@/lib/apiClient';
 import { auth } from '@/lib/auth';
+import { getLoanStatusColor, getLoanStatusUI } from '@/lib/colorMap';
+import { formatCurrency, formatDateKE } from '@/lib/currency';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
@@ -20,15 +22,6 @@ interface Loan {
   interest_rate: number;
   term_months: number;
 }
-
-const StatusBadgeVariant: Record<string, 'primary' | 'secondary' | 'success' | 'warning' | 'error'> = {
-  pending: 'warning',
-  under_review: 'primary',
-  approved: 'success',
-  rejected: 'error',
-  disbursed: 'success',
-  closed: 'primary',
-};
 
 export default function LoansPage() {
   const [loans, setLoans] = useState<Loan[]>([]);
@@ -254,20 +247,14 @@ export default function LoansPage() {
         >
           {loans.map((loan, idx) => {
             const statusLabel = loan.status.replace(/_/g, ' ').toUpperCase();
-            const formattedAmount = new Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency: 'USD',
-            }).format(loan.amount);
-            const appliedDate = new Date(loan.applied_at).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'short',
-              day: 'numeric',
-            });
+            const statusColor = getLoanStatusColor(loan.status);
+            const formattedAmount = formatCurrency(loan.amount, true);
+            const appliedDate = formatDateKE(new Date(loan.applied_at));
 
             return (
               <motion.div
                 key={loan.id}
-                className="record-tile group"
+                className={`record-tile group border-l-4 border-${statusColor}`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.05 }}
@@ -282,7 +269,7 @@ export default function LoansPage() {
                       {loan.customer_details.email}
                     </p>
                   </div>
-                  <Badge variant={StatusBadgeVariant[loan.status] || 'primary'}>
+                  <Badge color={statusColor as any}>
                     {statusLabel}
                   </Badge>
                 </div>
@@ -294,7 +281,7 @@ export default function LoansPage() {
                       <p className="text-xs uppercase tracking-wider text-muted font-semibold mb-1">
                         Loan Amount
                       </p>
-                      <p className="currency text-lg">
+                      <p className={`currency text-lg text-${statusColor}`}>
                         {formattedAmount}
                       </p>
                     </div>
