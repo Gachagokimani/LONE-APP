@@ -710,6 +710,208 @@ Mock data uses authentic Kenyan names and locations:
 <Badge color="rose">Suspended</Badge>
 ```
 
+### Profile Info Cards & Chips - Horizontal Layout ✨ NEW
+
+**Purpose:** Display user profile information in a modern card-based horizontal layout with inline chips for better data visualization and responsiveness.
+
+**Features:**
+- Horizontal flex layout with wrapping
+- Individual cards with crimson border/chip styling
+- Hover effects with elevation and glow
+- Fully responsive (1 row desktop, 2 columns tablet, 2 columns mobile)
+- Smooth transitions and transforms
+- Color-coded chips (crimson primary)
+
+**Component Structure:**
+```tsx
+<div className="profile-info-cards">
+  <div className="info-card">
+    <span className="info-chip">First Name</span>
+    <p className="info-value">Admin</p>
+  </div>
+  <div className="info-card">
+    <span className="info-chip">Email</span>
+    <p className="info-value">admin@mkopo.ke</p>
+  </div>
+  <div className="info-card">
+    <span className="info-chip">Phone</span>
+    <p className="info-value">+254 712 345 678</p>
+  </div>
+  {/* Additional cards... */}
+</div>
+```
+
+**CSS Classes:**
+
+```css
+/* Profile Info Cards Container */
+.profile-info-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+/* Individual Card */
+.info-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 160px;
+  max-width: 220px;
+  padding: 1rem;
+  background: var(--elevated);
+  border: 1px solid var(--border);
+  border-radius: 0.625rem;
+  transition: all var(--transition-normal);
+}
+
+/* Card Hover State */
+.info-card:hover {
+  background-color: var(--surface);
+  border-color: var(--primary);           /* Crimson border */
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.15);  /* Crimson glow */
+  transform: translateY(-2px);             /* Subtle lift */
+}
+
+/* Chip Badge */
+.info-chip {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  background: rgba(220, 38, 38, 0.15);    /* Crimson 15% */
+  color: var(--color-crimson);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  width: fit-content;
+  transition: all var(--transition-fast);
+}
+
+/* Chip Hover State */
+.info-card:hover .info-chip {
+  background: rgba(220, 38, 38, 0.25);    /* Crimson 25% */
+  border-color: rgba(220, 38, 38, 0.5);
+}
+
+/* Info Value Text */
+.info-card .info-value {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--text);
+  margin: 0;
+  word-break: break-word;
+}
+
+/* Responsive Rules */
+@media (max-width: 1024px) {
+  .info-card {
+    min-width: 140px;
+    max-width: 180px;
+    flex-basis: calc(50% - 0.5rem);  /* 2 columns */
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-info-cards {
+    gap: 0.75rem;
+  }
+
+  .info-card {
+    min-width: 120px;
+    flex-basis: calc(50% - 0.375rem);
+    padding: 0.875rem;
+  }
+
+  .info-chip {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.625rem;
+  }
+
+  .info-card .info-value {
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-info-cards {
+    gap: 0.5rem;
+  }
+
+  .info-card {
+    flex-basis: calc(50% - 0.25rem);
+    min-width: 100px;
+    padding: 0.75rem 0.5rem;
+  }
+
+  .info-chip {
+    font-size: 0.65rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .info-card .info-value {
+    font-size: 0.8125rem;
+  }
+}
+```
+
+**Color Scheme:**
+- **Card Background:** `--elevated` (#242438) with light elevation on hover
+- **Card Border:** `--border` default, changes to `--primary` (Crimson #DC2626) on hover
+- **Chip Background:** Crimson 15% opacity
+- **Chip Border:** Crimson 30% opacity
+- **Chip Text:** Crimson (#DC2626)
+- **Card Shadow:** Crimson glow (220, 38, 38, 0.15)
+- **Value Text:** Primary text color (#F8FAFC)
+
+**Animation Details:**
+- **Transition Duration:** 300ms (normal)
+- **Hover Lift:** -2px translateY
+- **Hover Shadow:** 0 4px 12px with crimson color
+- **Chip Enhancement:** Instant background/border color increase on card hover
+
+**Usage Notes:**
+- Renders inline from left to right
+- Automatically wraps to next row when screen space is limited
+- Each card maintains proper spacing with 1rem gap
+- Chips use uppercase labels for professional appearance
+- Perfect for profile views, settings pages, and user record displays
+
+**Example Implementation (ProfileInfoSection.tsx):**
+```tsx
+<div className="profile-info-cards">
+  <div className="info-card">
+    <span className="info-chip">First Name</span>
+    <p className="info-value">{user.firstName}</p>
+  </div>
+  <div className="info-card">
+    <span className="info-chip">Last Name</span>
+    <p className="info-value">{user.lastName}</p>
+  </div>
+  <div className="info-card">
+    <span className="info-chip">Email</span>
+    <p className="info-value">{user.email}</p>
+  </div>
+  <div className="info-card">
+    <span className="info-chip">Phone</span>
+    <p className="info-value">{user.phone}</p>
+  </div>
+  {user.department && (
+    <div className="info-card">
+      <span className="info-chip">Department</span>
+      <p className="info-value">{user.department}</p>
+    </div>
+  )}
+  <div className="info-card">
+    <span className="info-chip">Member Since</span>
+    <p className="info-value">{new Date(user.createdAt).toLocaleDateString()}</p>
+  </div>
+</div>
+```
+
 ### Staggered List Animations with Color Coding
 ```tsx
 <motion.div
@@ -2098,3 +2300,880 @@ css
 .badge-success { background: rgba(16, 185, 129, 0.15); color: var(--color-success); border: 1px solid rgba(16, 185, 129, 0.3); }
 .badge-warning { background: rgba(245, 158, 11, 0.15); color: var(--color-warning); border: 1px solid rgba(245, 158, 11, 0.3); }
 .badge-error   { background: rgba(239, 68, 68, 0.15); color: var(--color-error); border: 1px solid rgba(239, 68, 68, 0.3); }
+```
+
+---
+
+# Frontend Operations & Development Rules 📋
+
+**Complete rulebook for all frontend development, deployment, styling, and operational standards.**
+
+## Section 1: Development Environment Setup
+
+### Prerequisites
+- Node.js 18+ (LTS recommended)
+- npm 9+ or yarn
+- Git for version control
+- VS Code (recommended) with TypeScript extension
+
+### Initial Setup
+```bash
+# Clone repository
+git clone <repo-url>
+cd lone/frontend
+
+# Install dependencies
+npm install
+
+# Create environment file
+cp example.env.local .env.local
+
+# Set dev mode
+echo "NEXT_PUBLIC_DEV_MODE=true" >> .env.local
+echo "NEXT_PUBLIC_API_URL=http://localhost:8000/api" >> .env.local
+echo "NEXT_PUBLIC_N8N_WEBHOOK_URL=http://localhost:5678/webhook/chat-agent" >> .env.local
+```
+
+### Environment Variables
+```env
+# Development Mode - Bypass Authentication
+NEXT_PUBLIC_DEV_MODE=true              # Enable dev auth bypass
+
+# API Configuration
+NEXT_PUBLIC_API_URL=http://localhost:8000/api
+
+# N8N Webhook Configuration  
+NEXT_PUBLIC_N8N_WEBHOOK_URL=http://localhost:5678/webhook/chat-agent
+NEXT_PUBLIC_N8N_TIMEOUT=30000          # 30 second timeout
+
+# Application Settings
+NEXT_PUBLIC_APP_NAME=Mkopo Kenya
+NEXT_PUBLIC_APP_CURRENCY=KES
+```
+
+### Running Development Server
+```bash
+# Start Next.js dev server (port 3000)
+npm run dev
+
+# With file watching and automatic reload
+npm run dev -- --open
+
+# Access application
+# Frontend: http://localhost:3000
+# Backend API: http://localhost:8000
+# Backend Admin: http://localhost:8000/admin
+# n8n Dashboard: http://localhost:5678
+```
+
+## Section 2: Authentication & Dev Mode Rules
+
+### Dev Mode Behavior
+- ✅ **No Login Required**: Direct access to all routes
+- ✅ **Auto-Authenticated**: All requests treated as admin user
+- ✅ **Dev Token**: Automatic token included in all API calls
+- ✅ **Full Feature Access**: All admin and user features available
+
+### Dev Mode Configuration
+```tsx
+// lib/auth.ts - Automatically handles dev mode
+if (process.env.NEXT_PUBLIC_DEV_MODE === 'true') {
+  // Skip authentication checks
+  // Send dev token with all requests
+  // Provide default admin user
+}
+```
+
+### Production Mode
+When deploying to production:
+1. Set `NEXT_PUBLIC_DEV_MODE=false`
+2. Implement real JWT authentication
+3. Users must log in via `/login` page
+4. API requests require valid JWT token
+5. Role-based access control enforced
+
+### Authentication Flow (Production)
+```
+User Login (/login)
+  ↓
+API request to /api/auth/token/
+  ↓
+Store JWT token in secure cookie
+  ↓
+Include token in all API requests
+  ↓
+Token auto-refreshes on expiration
+  ↓
+Auto-redirect to login on 401/403
+```
+
+## Section 3: Styling & CSS Architecture Rules
+
+### Global CSS Only
+- **Single Source**: All styles in `app/globals.css` (1100+ lines)
+- **No CSS Modules**: Avoid `*.module.css` files
+- **No styled-components**: No runtime CSS-in-JS
+- **Semantic Classes**: BEM-like naming convention
+- **Class Naming Pattern**: `.block__element--modifier`
+
+### **Required**: Utility Classes in CSS
+```css
+/* Layout */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.flex-center { display: flex; justify-content: center; align-items: center; }
+
+/* Spacing */
+.p-4 { padding: 1rem; }
+.m-2 { margin: 0.5rem; }
+.gap-4 { gap: 1rem; }
+
+/* Colors */
+.text-crimson { color: var(--color-crimson); }
+.bg-crimson { background-color: rgba(220, 38, 38, 0.1); }
+.border-crimson { border-color: var(--color-crimson); }
+
+/* All 12 colors required in utilities */
+```
+
+### Dark Theme Requirements
+- ✅ **No white backgrounds**: Use dark palette only (#0A0A0F, #1A1A2A)
+- ✅ **Contrast ratios**: Maintain WCAG AA standards
+- ✅ **All text readable**: Off-white (#F8FAFC) on dark backgrounds
+- ✅ **Cards elevated**: Slight background color increase on hover
+- ✅ **No light mode**: Not supported, dark only
+
+### Responsive Design Rules
+```css
+/* Mobile-first approach */
+/* Default: Mobile screens (< 480px) */
+
+@media (max-width: 480px) { /* Smartphones */ }
+@media (min-width: 481px) and (max-width: 768px) { /* Tablets */ }
+@media (min-width: 769px) and (max-width: 1024px) { /* Small desktops */ }
+@media (min-width: 1025px) { /* Large desktops */ }
+```
+
+## Section 4: Component Development Rules
+
+### Component Structure
+```tsx
+'use client';
+
+import React from 'react';
+import { motion } from 'framer-motion';
+import Icon from '@/components/ui/Icon';
+
+interface ComponentProps {
+  title: string;
+  variant?: 'primary' | 'secondary';
+}
+
+export default function MyComponent({ title, variant = 'primary' }: ComponentProps) {
+  return (
+    <motion.div
+      className={`component component--${variant}`}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      {title}
+    </motion.div>
+  );
+}
+```
+
+### Component Rules
+1. **Use 'use client'** directive for interactivity
+2. **TypeScript**: All components must be typed
+3. **Framer Motion**: Animate on mount/unmount
+4. **Icon component**: Always use Icon wrapper from `ui/Icon`
+5. **CSS classes**: Use semantic class names only
+6. **Props interface**: Required for all components
+7. **No inline styles**: All styles in globals.css
+8. **Accessibility**: ARIA labels, keyboard nav, focus states
+
+### Icon Usage Rules
+```tsx
+// CORRECT: Use Icon component
+<Icon name="CheckCircle" size={24} color="emerald" animate="glow" />
+
+// WRONG: Direct icon import
+import { CheckCircle } from 'lucide-react';
+<CheckCircle />
+
+// Available animations
+// 'spin' | 'pulse' | 'bounce' | 'spin-slow' | 'spin-fast' | 'ping' | 'wobble' | 'glow'
+
+// Color options
+// 'primary' | 'secondary' | 'tertiary' | 'muted' | 'success' | 'warning' | 'error' | 'info' | 'default'
+```
+
+### Button Variants
+```tsx
+// Semantic button variants (all colors required)
+<Button variant="primary">Create</Button>      {/* Crimson */}
+<Button variant="secondary">Edit</Button>      {/* Orange */}
+<Button variant="tertiary">View</Button>       {/* Cyan */}
+<Button variant="quaternary">Mark</Button>     {/* Violet */}
+<Button variant="info">Help</Button>           {/* Blue */}
+<Button variant="success">Approve</Button>     {/* Emerald */}
+<Button variant="danger">Delete</Button>       {/* Rose */}
+```
+
+### Badge Variants
+```tsx
+// Status badges (color-coded by meaning)
+<Badge color="crimson">Urgent</Badge>
+<Badge color="emerald">Approved</Badge>
+<Badge color="amber">Pending</Badge>
+<Badge color="rose">Rejected</Badge>
+<Badge color="sky">Under Review</Badge>
+<Badge color="lime">Disbursed</Badge>
+```
+
+## Section 5: Chat & Agentic Workflow Integration
+
+### Chat Components Structure
+```
+MonopolyAvatar (Fixed bottom-right, clickable)
+  ↓
+ChatModal (Opens on avatar click)
+  ├── Chat Header (branding, actions)
+  ├── Message Area (user/assistant messages)
+  │   ├── User Messages (right-aligned)
+  │   ├── Assistant Messages (left-aligned)
+  │   └── Thinking Blocks (collapsible)
+  ├── Input (ChatInput component)
+  └── Suggested Actions (agent-proposed)
+```
+
+### N8N Webhook Integration
+```tsx
+// lib/n8nWebhook.ts - Complete webhook abstraction
+
+const sendToN8nWebhook = async (message: string, context: any) => {
+  const response = await fetch(process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL, {
+    method: 'POST',
+    timeout: process.env.NEXT_PUBLIC_N8N_TIMEOUT,
+    body: JSON.stringify({
+      message,
+      context: {
+        page: context.page,
+        userId: context.userId,
+        timestamp: new Date().toISOString(),
+        ...context
+      }
+    })
+  });
+  
+  if (!response.ok) throw new Error('Webhook failed');
+  return response.json();
+};
+
+// Expected Response
+{
+  "success": true,
+  "response": "Agent's text response",
+  "thinking": "Agent's reasoning (optional)",
+  "actions": [
+    { "type": "navigate", "data": { "url": "/loans" } }
+  ]
+}
+```
+
+### useAgenticChat Hook Usage
+```tsx
+import { useAgenticChat } from '@/hooks/useAgenticChat';
+
+export default function MyPage() {
+  const {
+    messages,
+    isLoading,
+    error,
+    sendMessage,
+    clearHistory,
+    clearError
+  } = useAgenticChat({ maxRetries: 2 });
+
+  const handleChat = async () => {
+    await sendMessage('User message', { page: '/dashboard' });
+  };
+
+  return (
+    <>
+      {messages.map(msg => (
+        <div key={msg.id} className={msg.role === 'user' ? 'user-msg' : 'assistant-msg'}>
+          {msg.content}
+        </div>
+      ))}
+      {error && <div className="alert-error">{error}</div>}
+    </>
+  );
+}
+```
+
+## Section 6: API Integration Rules
+
+### API Client Setup
+```typescript
+// lib/apiClient.ts - Axios instance with JWT handling
+
+import axios from 'axios';
+import { getCookie, setCookie, deleteCookie } from '@/lib/auth';
+
+const apiClient = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  timeout: 10000,
+  headers: { 'Content-Type': 'application/json' }
+});
+
+// Interceptor: Add JWT token
+apiClient.interceptors.request.use((config) => {
+  const token = getCookie('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+// Interceptor: Handle 401/403
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      deleteCookie('token');
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
+
+export default apiClient;
+```
+
+### API Request Patterns
+```typescript
+// GET - Fetch data
+const loans = await apiClient.get('/loans/', {
+  params: { status: 'pending', page: 1 }
+});
+
+// POST - Create new record
+const newLoan = await apiClient.post('/loans/', {
+  customer_id: 123,
+  amount: 500000,
+  purpose: 'Business expansion'
+});
+
+// PATCH - Update partial data
+const updatedLoan = await apiClient.patch(`/loans/${id}/`, {
+  status: 'approved'
+});
+
+// DELETE - Remove record
+await apiClient.delete(`/loans/${id}/`);
+```
+
+### Error Handling Pattern
+```typescript
+try {
+  const response = await apiClient.get('/loans/');
+  // Handle success
+} catch (error) {
+  if (error.response?.status === 404) {
+    // Handle not found
+  } else if (error.response?.status === 400) {
+    // Handle validation error
+  } else if (error.request && !error.response) {
+    // Handle network error
+  } else {
+    // Handle other errors
+  }
+}
+```
+
+## Section 7: File Structure & Organization
+
+### Required Frontend Structure
+```
+frontend/
+├── app/
+│   ├── globals.css              # ✅ ALL styles here (no scoped CSS)
+│   ├── layout.tsx               # Root layout with navigation
+│   ├── page.tsx                 # Home page (redirects)
+│   ├── ClientLayout.tsx         # Global wrapper with chat
+│   ├── login/
+│   │   └── page.tsx            # Login form
+│   ├── dashboard/
+│   │   └── page.tsx            # Main dashboard
+│   ├── loans/
+│   │   ├── page.tsx            # Loans list
+│   │   ├── new/
+│   │   │   └── page.tsx
+│   │   └── [id]/
+│   │       └── page.tsx
+│   ├── customers/
+│   │   ├── page.tsx            # Customers list
+│   │   ├── new/
+│   │   │   └── page.tsx
+│   │   └── [id]/
+│   │       └── page.tsx
+│   └── settings/
+│       ├── page.tsx
+│       └── SettingsContent.tsx
+├── components/
+│   ├── ui/                      # Reusable base components
+│   │   ├── Button.tsx
+│   │   ├── Card.tsx
+│   │   ├── Badge.tsx
+│   │   ├── Icon.tsx
+│   │   ├── Modal.tsx
+│   │   └── Skeleton.tsx
+│   ├── settings/               # Settings page components
+│   │   ├── ProfileInfoSection.tsx
+│   │   ├── AdminUserManagement.tsx
+│   │   ├── AISection.tsx
+│   │   └── NotificationSection.tsx
+│   ├── MonopolyAvatar.tsx      # Chat avatar
+│   ├── ChatModal.tsx            # Chat interface
+│   ├── ChatInput.tsx            # Chat input
+│   ├── AdminDashboard.tsx       # Admin stats
+│   └── UserDashboard.tsx        # User stats
+├── context/
+│   ├── AuthContext.tsx
+│   └── ThemeContext.tsx
+├── hooks/
+│   ├── useAgenticChat.ts
+│   └── useSettings.ts
+├── lib/
+│   ├── apiClient.ts            # Axios instance
+│   ├── auth.ts                 # JWT/auth helpers
+│   ├── types.ts                # TypeScript types
+│   ├── currency.ts             # KES formatting
+│   ├── colorMap.ts             # Color mappings
+│   ├── settingsApi.ts          # Settings API
+│   └── n8nWebhook.ts           # N8N integration
+├── .env.local                  # Environment variables
+├── .gitignore
+├── tsconfig.json
+├── next.config.js
+├── package.json
+└── package-lock.json
+```
+
+### Naming Conventions
+- **Files**: `PascalCase.tsx` for components, `camelCase.ts` for utilities
+- **Classes**: `.block__element--modifier` (BEM-like)
+- **Types**: `export interface ComponentProps { }`
+- **Constants**: `UPPERCASE_WITH_UNDERSCORES`
+- **Functions**: `camelCase`
+- **Variables**: `camelCase`
+
+## Section 8: Build & Deployment
+
+### Development Build
+```bash
+# Build for local testing
+npm run build
+
+# Run production build locally
+npm start
+
+# Check for errors/warnings
+npm run lint
+```
+
+### Production Deployment
+```bash
+# Environment: Set NEXT_PUBLIC_DEV_MODE=false
+NEXT_PUBLIC_DEV_MODE=false
+
+# Build optimized bundle
+npm run build
+
+# Push to production
+git add .
+git commit -m "Deploy: v1.0.0"
+git push origin main
+
+# Docker deployment
+docker build -t mkopo-frontend:latest .
+docker run -p 3000:3000 \
+  -e NEXT_PUBLIC_API_URL=https://api.mkopo.ke \
+  -e NEXT_PUBLIC_DEV_MODE=false \
+  mkopo-frontend:latest
+```
+
+### Deployment Checklist
+- ✅ `NEXT_PUBLIC_DEV_MODE=false`
+- ✅ `NEXT_PUBLIC_API_URL` points to production backend
+- ✅ All environment variables set securely
+- ✅ Build completes without errors/warnings
+- ✅ All pages load and function correctly
+- ✅ Chat/N8N webhook configured for production
+- ✅ Database migrations run on backend
+- ✅ DNS/domain properly configured
+- ✅ SSL certificate installed
+- ✅ Monitoring and logging enabled
+
+## Section 9: Testing Rules
+
+### Component Testing
+```tsx
+// Always test:
+// 1. Rendering with props
+// 2. User interactions (click, input)
+// 3. Animations (Framer Motion)
+// 4. Error states
+// 5. Loading states
+```
+
+### API Testing
+```bash
+# Test API endpoints with curl
+curl http://localhost:8000/api/loans/
+
+# Test with dev token
+curl -H "Authorization: Bearer dev-mode-bypass-token" \
+  http://localhost:8000/api/loans/
+
+# Check webhook
+curl -X POST http://localhost:5678/webhook/chat-agent \
+  -H "Content-Type: application/json" \
+  -d '{"message": "test", "context": {}}'
+```
+
+### E2E Testing (Dev Mode)
+```bash
+# All routes accessible without login
+1. http://localhost:3000/          # Home (redirects to dashboard)
+2. http://localhost:3000/login     # Login (skipped in dev mode)
+3. http://localhost:3000/dashboard # Admin dashboard
+4. http://localhost:3000/loans     # Loans list
+5. http://localhost:3000/customers # Customers list
+6. http://localhost:3000/settings  # Settings page
+```
+
+## Section 10: Common Issues & Troubleshooting
+
+### Issue: Still seeing login page despite dev mode?
+**Solution**: 
+1. Verify `NEXT_PUBLIC_DEV_MODE=true` in `.env.local`
+2. Verify backend `DEVELOPMENT_MODE=True` in `backend/.env`
+3. Restart both servers: `npm run dev`
+
+### Issue: API returns 401 Unauthorized?
+**Solution**:
+1. Check backend authentication middleware is active
+2. Verify `DEVELOPMENT_MODE=True` enables middleware
+3. Check token is being sent in request headers
+
+### Issue: Chat/N8N webhook failing?
+**Solution**:
+1. Verify N8N is running: `http://localhost:5678`
+2. Check webhook URL in environment: `NEXT_PUBLIC_N8N_WEBHOOK_URL`
+3. Verify n8n webhook trigger exists and is active
+4. Check browser console for error messages
+5. Check n8n execution logs for failures
+
+### Issue: Styles not applying?
+**Solution**:
+1. Verify CSS is in `app/globals.css` (not a new CSS file)
+2. Check class name spelling (case-sensitive)
+3. Check CSS variable names match (using `var(--color-*)`)
+4. Restart dev server for CSS changes
+5. Clear browser cache: Ctrl+Shift+Delete
+
+### Issue: Icons not showing?
+**Solution**:
+1. Use `<Icon>` component, not direct imports
+2. Verify icon name exists in Lucide React docs
+3. Check console for errors
+4. Ensure size prop is set (default 20px)
+5. Verify color class is correct
+
+## Section 11: Performance Optimization Rules
+
+### Code Splitting
+- ✅ Use dynamic imports for heavy components
+- ✅ Lazy load page components
+- ✅ Tree-shake unused code
+
+### Image Optimization
+- ✅ Use Next.js `<Image>` component
+- ✅ Provide width/height props
+- ✅ Set `priority={true}` for above-fold images
+- ✅ Use WebP format when possible
+
+### CSS & Animation Performance
+- ✅ Hardware-accelerated transforms (`transform`)
+- ✅ Use `will-change` for frequently animated elements
+- ✅ Minimize repaints (avoid `box-shadow` changes)
+- ✅ Debounce resize/scroll event handlers
+
+### Bundle Size
+- ✅ Single CSS file (no CSS Modules)
+- ✅ Semantic class names only
+- ✅ No CSS-in-JS libraries
+- ✅ Tree-shake unused utilities
+
+## Section 12: Dark/Light Mode & Theme Management
+
+### Theme System Overview
+- **Primary Theme**: Dark mode (#0A0A0F background, #1A1A2A surfaces)
+- **Secondary Theme**: Light mode (HSL-based light backgrounds for accessibility)
+- **Auto Mode**: Follow system/device preference using `prefers-color-scheme`
+- **Persistence**: Theme preference saved to `localStorage` as `theme-preference`
+- **Context-Based**: Global theme state via React Context (`ThemeContext`)
+
+### ThemeContext Hook Usage
+```tsx
+import { useTheme } from '@/context/ThemeContext';
+
+export default function MyComponent() {
+  const { theme, isDark, setTheme, toggleDarkMode } = useTheme();
+
+  return (
+    <>
+      <p>Current theme: {theme}</p>
+      <p>Is dark mode: {isDark}</p>
+      
+      <button onClick={() => setTheme('dark')}>Dark</button>
+      <button onClick={() => setTheme('light')}>Light</button>
+      <button onClick={() => setTheme('auto')}>Auto</button>
+      <button onClick={toggleDarkMode}>Toggle</button>
+    </>
+  );
+}
+```
+
+### Theme Settings Component
+Located in `components/settings/ThemeSection.tsx` - User-facing theme selection interface:
+
+**Features:**
+- Three theme option cards (Dark, Light, Auto)
+- Icons with color-coded indicators
+- Smooth hover animations and selection states
+- Glow effect on selected theme icon
+- Informational box showing current mode impact
+
+**Styling Classes (DSS-Aligned):**
+- `.theme-options` - Grid container (3 columns desktop, 2 columns tablet, 1 mobile)
+- `.theme-card` - Individual theme option card
+- `.theme-card-icon` - Icon container with dynamic background
+- `.theme-card-label` - Theme name text
+- `.theme-card-description` - Description text
+- `.theme-card-badge` - Active checkmark indicator
+- `.theme-info-box` - Current mode information box
+
+### CSS Theme Application
+Document root classes applied dynamically:
+```css
+/* Dark Mode */
+html.dark-mode {
+  --bg-primary: #0A0A0F;
+  --surface: #1A1A2A;
+  --elevated: #242438;
+  --text: #F8FAFC;
+  --text-muted: #94A3B8;
+  --border: #2D2D44;
+}
+
+/* Light Mode - Inverse colors */
+html.light-mode {
+  --bg-primary: #F8FAFC;
+  --surface: #F1F5F9;
+  --elevated: #E2E8F0;
+  --text: #0F172A;
+  --text-muted: #475569;
+  --border: #D1D5DB;
+}
+```
+
+### Theme Settings Page Integration
+In `app/settings/SettingsContent.tsx`:
+
+```tsx
+// Access theme state
+const { theme: currentTheme, isDark, setTheme } = useTheme();
+
+// Render ThemeSection component
+<ThemeSection
+  currentTheme={currentTheme}
+  isDark={isDark}
+  onThemeChange={handleThemeChange}
+/>
+
+// Handle theme changes with persist
+const handleThemeChange = async (newTheme: Theme) => {
+  try {
+    setTheme(newTheme);  // Update context
+    await handleSettingsUpdate({ themeMode: newTheme });  // Persist to backend
+  } catch (error) {
+    console.error('Failed to change theme:', error);
+  }
+};
+```
+
+### ThemeContext Implementation Details
+```tsx
+// context/ThemeContext.tsx
+
+export function ThemeProvider({ children }: ThemeProviderProps) {
+  // 1. Load theme from localStorage on mount
+  // 2. Apply 'dark-mode' or 'light-mode' class to document.documentElement
+  // 3. Support Theme.AUTO by checking system preference
+  // 4. Sync changes back to localStorage
+  // 5. Update document classes on theme change
+}
+
+// Using the hook
+export function useTheme() {
+  return useContext(ThemeContext);  // Returns { theme, isDark, setTheme, toggleDarkMode }
+}
+```
+
+### Responsive Theme Card Styles
+
+**Desktop (1024px+):**
+- 3-column grid layout
+- 160px minimum width per card
+- Full padding and spacing
+
+**Tablet (769px - 1024px):**
+- 2-column grid layout
+- Adjusted icon sizes (40px)
+- Smaller font sizes
+
+**Mobile (< 769px):**
+- Single column on very small screens
+- Or 2-column grid on portrait tablets
+- Reduced padding (1rem)
+- Smaller icons (36px)
+- Minimal gap spacing (0.75rem)
+
+### Theme Persistence Rules
+1. **localStorage Key**: `theme-preference`
+2. **Values**: `'light'` | `'dark'` | `'auto'`
+3. **Default**: `'dark'` (recommended for brand identity)
+4. **SystemPreference**: Auto mode reads `window.matchMedia('(prefers-color-scheme: dark)')`
+5. **DocumentClass**: Applied to `<html>` element for CSS cascade
+
+### Settings API Integration
+Theme preference synced with backend user settings:
+
+```typescript
+// lib/settingsApi.ts
+export const updateUserSettings = async (userId: string, settings: Partial<UserSettings>) => {
+  return await apiClient.patch(`/users/${userId}/`, {
+    settings: {
+      themeMode: settings.themeMode,  // 'light' | 'dark' | 'auto'
+      // ... other settings
+    }
+  });
+};
+```
+
+### Theme Usage Examples in UI Components
+
+**Icon Colors Adapt to Theme:**
+```tsx
+<Icon name="Moon" size={32} color="violet" animate="glow" />
+{/* In dark mode: Bright violet */}
+{/* In light mode: Darker violet with visibility guaranteed */}
+```
+
+**Text Colors Adapt:**
+```css
+.theme-card-description {
+  color: var(--text-muted);  /* Auto adjusts: #94A3B8 dark → #475569 light */
+}
+```
+
+**Background Colors Adapt:**
+```css
+.theme-options {
+  background: var(--elevated);  /* Auto adjusts based on theme */
+}
+```
+
+### Accessibility Rules for Dark/Light Mode
+- ✅ **Contrast**: Maintain WCAG AA standards in both modes
+- ✅ **No flickering**: Preload theme preference before rendering
+- ✅ **System sync**: Auto mode respects device settings
+- ✅ **Persistence**: User choice respected across sessions
+- ✅ **No flash**: Hydration-safe initialization on client-side only
+- ✅ **Keyboard accessible**: All theme options tabbable and keyboard selectable
+
+## Section 13: Settings Components Refinement
+- ✅ Store in `httpOnly` cookie (not localStorage)
+- ✅ Set `sameSite: 'strict'` attribute
+- ✅ Clear on logout
+- ✅ Check expiration before use
+
+### CORS & API Security
+- ✅ Frontend `NEXT_PUBLIC_API_URL` points to backend
+- ✅ Backend CORS whitelist includes frontend origin
+- ✅ Use JWT Bearer tokens in Authorization header
+- ✅ Handle 401/403 with redirect to login
+
+### Sensitive Data
+- ✅ Never commit `.env.local` (use `.gitignore`)
+- ✅ Never expose API keys in client code
+- ✅ Use `NEXT_PUBLIC_` prefix only for non-secret vars
+- ✅ Validate user input before API calls
+- ✅ Escape HTML output to prevent XSS
+
+## Section 13: Git & Version Control
+
+### Commit Message Format
+```
+feat(component): add new feature
+fix(api): resolve data loading issue
+style(css): update button styling
+refactor(hooks): simplify chat logic
+docs(readme): update instructions
+test(login): add authentication tests
+
+Prefix options: feat, fix, style, refactor, docs, test, perf, ci, chore
+```
+
+### Branch Naming
+```
+feature/add-loan-calculator
+bugfix/fix-chat-scrolling
+refactor/optimize-api-calls
+docs/update-readme
+```
+
+### `.gitignore` Rules
+```
+node_modules/
+.next/
+.env.local
+.env.local.backup
+*.log
+dist/
+build/
+.DS_Store
+.vercel
+```
+
+## Quick Reference Commands
+
+| Command | Purpose |
+|---------|---------|
+| `npm install` | Install dependencies |
+| `npm run dev` | Start dev server (port 3000) |
+| `npm run build` | Build for production |
+| `npm start` | Run production build |
+| `npm run lint` | Check code quality |
+| `npm run type-check` | Check TypeScript types |
+| `npm test` | Run test suite |
+
+---
+
+**Last Updated**: March 28, 2026  
+**Version**: 2.1 (Complete Frontend Operations Rulebook)  
+**Status**: Production Ready ✅

@@ -217,7 +217,7 @@ export default function UserDashboard() {
                             {formattedAmount}
                           </td>
                           <td>
-                            <Badge variant={StatusBadgeVariant[loan.status] || 'primary'}>
+                            <Badge color={StatusBadgeVariant[loan.status] || 'primary'}>
                               {loan.status.replace(/_/g, ' ').toUpperCase()}
                             </Badge>
                           </td>
