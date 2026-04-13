@@ -5,11 +5,11 @@
   "private": true,
   "scripts": {
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
-    "dev:backend": "cd backend && (if exist .env.local (echo .env exists) else (copy .env.example .env.local)) && python manage.py migrate && python manage.py runserver 0.0.0.0:8000",
+    "dev:backend": "cd backend && (if exist .env.local (echo .env exists) else (copy .env.example .env.local)) && .\\venv\\Scripts\\python manage.py migrate && .\\venv\\Scripts\\python manage.py runserver 0.0.0.0:8000",
     "dev:frontend": "cd frontend && npm run dev",
     "install:all": "npm install && cd backend && pip install -r requirements.txt && cd ../frontend && npm install",
     "dev:both": "npm run dev:backend & npm run dev:frontend",
-    "dev:backend:windows": "cd backend && python manage.py migrate & python manage.py runserver 0.0.0.0:8000",
+    "dev:backend:windows": "cd backend && .\\venv\\Scripts\\python manage.py migrate & .\\venv\\Scripts\\python manage.py runserver 0.0.0.0:8000",
     "dev:frontend:windows": "cd frontend && npm run dev",
     "test:api": "curl -s http://localhost:8000/api/ | jq . || echo 'Waiting for backend...'",
     "test:ui": "timeout 2 curl -s http://localhost:3000 > /dev/null && echo '✓ Frontend running on http://localhost:3000' || echo 'Frontend not available yet'",

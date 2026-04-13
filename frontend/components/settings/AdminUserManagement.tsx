@@ -73,90 +73,85 @@ export default function AdminUserManagement({
           ))}
         </div>
 
-        {/* Users Table */}
-        <div className="users-table-wrapper">
-          <table className="users-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Status</th>
-                <th>Last Login</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredUsers.map((user) => (
-                <motion.tr
-                  key={user.id}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  whileHover={{ backgroundColor: 'var(--elevated)' }}
-                >
-                  <td>
-                    <div className="user-cell">
-                      <div className="user-avatar-sm">
-                        {user.firstName.charAt(0)}
-                        {user.lastName.charAt(0)}
-                      </div>
-                      <div>
-                        <p className="font-semibold">{user.firstName} {user.lastName}</p>
-                        <p className="text-xs text-muted">{user.username}</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                    <p className="text-sm">{user.email}</p>
-                  </td>
-                  <td>
-                    <div className="role-selector">
-                      <Badge color={getRoleColor(user.role) as any}>
-                        {getRoleDisplayName(user.role)}
-                      </Badge>
-                    </div>
-                  </td>
-                  <td>
-                    <Badge color={user.isActive ? 'emerald' : 'rose'}>
-                      {user.isActive ? 'Active' : 'Inactive'}
-                    </Badge>
-                  </td>
-                  <td>
-                    <p className="text-xs text-muted">
-                      {user.lastLogin ? new Date(user.lastLogin).toLocaleDateString() : 'Never'}
-                    </p>
-                  </td>
-                  <td>
-                    <div className="action-buttons">
-                      {user.isActive ? (
-                        <motion.button
-                          onClick={() => onDecommission(user.id)}
-                          className="btn-sm btn-danger"
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          disabled={isLoading}
-                          title="Decommission this user"
-                        >
-                          <Icon name="Power" size={14} />
-                        </motion.button>
-                      ) : (
-                        <motion.button
-                          onClick={() => onReactivate(user.id)}
-                          className="btn-sm btn-success"
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          disabled={isLoading}
-                          title="Reactivate this user"
-                        >
-                          <Icon name="Check" size={14} />
-                        </motion.button>
-                      )}
-                    </div>
-                  </td>
-                </motion.tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="user-card-grid">
+          {filteredUsers.map((user) => (
+            <motion.div
+              key={user.id}
+              className={`user-card ${user.isActive ? 'user-card-active' : ''}`}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              whileHover={{ y: -2 }}
+            >
+              <div className="user-card-top">
+                <div className="user-cell">
+                  <div className="user-avatar-sm">
+                    {user.firstName.charAt(0)}
+                    {user.lastName.charAt(0)}
+                  </div>
+                  <div>
+                    <p className="font-semibold">{user.firstName} {user.lastName}</p>
+                    <p className="text-xs text-muted">{user.username}</p>
+                  </div>
+                </div>
+
+                <div className="user-chip-group">
+                  <Badge color={getRoleColor(user.role) as any}>
+                    {getRoleDisplayName(user.role)}
+                  </Badge>
+                  <Badge color={user.isActive ? 'emerald' : 'rose'}>
+                    {user.isActive ? 'Active' : 'Inactive'}
+                  </Badge>
+                </div>
+              </div>
+
+              <div className="user-card-meta">
+                <span className="text-xs text-muted">
+                  Last login: {user.lastLogin ? new Date(user.lastLogin).toLocaleDateString() : 'Never'}
+                </span>
+              </div>
+
+              <div className="user-card-actions">
+                <div className="role-chip-row">
+                  {([UserRole.ADMIN, UserRole.MANAGER, UserRole.USER] as const).map((roleOption) => (
+                    <button
+                      key={roleOption}
+                      type="button"
+                      className={`role-chip ${user.role === roleOption ? 'active' : ''}`}
+                      onClick={() => handleRoleChange(user.id, roleOption)}
+                      disabled={isLoading}
+                    >
+                      {getRoleDisplayName(roleOption)}
+                    </button>
+                  ))}
+                </div>
+                <div className="action-buttons">
+                  {user.isActive ? (
+                    <motion.button
+                      onClick={() => onDecommission(user.id)}
+                      className="btn-sm btn-danger"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      disabled={isLoading}
+                      title="Decommission this user"
+                    >
+                      <Icon name="Power" size={14} />
+                    </motion.button>
+                  ) : (
+                    <motion.button
+                      onClick={() => onReactivate(user.id)}
+                      className="btn-sm btn-success"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      disabled={isLoading}
+                      title="Reactivate this user"
+                    >
+                      <Icon name="Check" size={14} />
+                    </motion.button>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
 
         {filteredUsers.length === 0 && (

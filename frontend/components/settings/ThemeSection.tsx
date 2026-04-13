@@ -122,6 +122,11 @@ export default function ThemeSection({
             </p>
           </div>
         </motion.div>
+
+        <div className="theme-chip-row">
+          <span className="status-chip status-chip-violet">DSS chip-ready</span>
+          <span className="status-chip status-chip-sky">Accessible theme picks</span>
+        </div>
       </div>
     </motion.div>
   );

@@ -60,50 +60,78 @@ export default function NotificationSection({
       </div>
 
       <div className="settings-content">
-        <div className="notification-items">
-          {/* Email Notifications */}
-          <div className="notification-item">
-            <div className="notification-info">
-              <h4 className="notification-title">Email Notifications</h4>
-              <p className="text-sm text-muted">
-                Receive updates about loans and important system events
-              </p>
+        <div className="notification-grid">
+          <motion.div
+            className="notification-card"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.05 }}
+          >
+            <div className="notification-card-header">
+              <div className="notification-card-title">
+                <Icon name="Mail" size={18} color="blue" />
+                <div>
+                  <h4 className="notification-title">Email Notifications</h4>
+                  <p className="text-sm text-muted">
+                    Receive updates about loans and important system events
+                  </p>
+                </div>
+              </div>
+              <span className={`status-chip ${emailNotifs ? 'status-chip-success' : 'status-chip-warning'}`}>
+                {emailNotifs ? 'Active' : 'Paused'}
+              </span>
             </div>
+
             <motion.button
-              className={`toggle-switch ${emailNotifs ? 'enabled' : ''}`}
+              className={`toggle-switch ${emailNotifs ? 'active' : ''}`}
               onClick={handleEmailToggle}
               disabled={isLoading}
               whileTap={{ scale: 0.95 }}
+              aria-pressed={emailNotifs}
             >
               <motion.div
-                className="toggle-circle"
+                className="toggle-switch-thumb"
                 animate={{ x: emailNotifs ? 20 : 0 }}
                 transition={{ type: 'spring', stiffness: 500, damping: 30 }}
               />
             </motion.button>
-          </div>
+          </motion.div>
 
-          {/* SMS Notifications */}
-          <div className="notification-item">
-            <div className="notification-info">
-              <h4 className="notification-title">SMS Notifications</h4>
-              <p className="text-sm text-muted">
-                Get critical alerts via text message to {settings.emailNotifications ? 'your phone' : 'N/A'}
-              </p>
+          <motion.div
+            className="notification-card"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+          >
+            <div className="notification-card-header">
+              <div className="notification-card-title">
+                <Icon name="MessageSquare" size={18} color="cyan" />
+                <div>
+                  <h4 className="notification-title">SMS Notifications</h4>
+                  <p className="text-sm text-muted">
+                    Get critical alerts via text message to {settings.emailNotifications ? 'your phone' : 'N/A'}
+                  </p>
+                </div>
+              </div>
+              <span className={`status-chip ${smsNotifs ? 'status-chip-success' : 'status-chip-warning'}`}>
+                {smsNotifs ? 'Active' : 'Paused'}
+              </span>
             </div>
+
             <motion.button
-              className={`toggle-switch ${smsNotifs ? 'enabled' : ''}`}
+              className={`toggle-switch ${smsNotifs ? 'active' : ''}`}
               onClick={handleSmsToggle}
               disabled={isLoading}
               whileTap={{ scale: 0.95 }}
+              aria-pressed={smsNotifs}
             >
               <motion.div
-                className="toggle-circle"
+                className="toggle-switch-thumb"
                 animate={{ x: smsNotifs ? 20 : 0 }}
                 transition={{ type: 'spring', stiffness: 500, damping: 30 }}
               />
             </motion.button>
-          </div>
+          </motion.div>
         </div>
 
         {/* Notification Center */}
